@@ -25,10 +25,6 @@ const initialCards = [
   },
 ];
 
-initialCards.forEach(function (card) {
-  console.log(card.name);
-});
-
 // Elementos del perfil
 const profileName = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
@@ -43,23 +39,40 @@ const descriptionInput = profileForm.querySelector(
   ".popup__input_type_description",
 );
 
-function openEditPopup() {
-  nameInput.value = profileName.textContent;
-  descriptionInput.value = profileDescription.textContent;
-  editPopup.classList.add("popup_is-opened");
+// Funciones reutilizables: reciben el modal como argumento
+function openModal(modal) {
+  modal.classList.add("popup_is-opened");
 }
 
-function closeEditPopup() {
-  editPopup.classList.remove("popup_is-opened");
+function closeModal(modal) {
+  modal.classList.remove("popup_is-opened");
+}
+
+function fillProfileForm() {
+  nameInput.value = profileName.textContent;
+  descriptionInput.value = profileDescription.textContent;
+}
+
+function handleOpenEditModal() {
+  fillProfileForm();
+  openModal(editPopup);
 }
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = nameInput.value;
   profileDescription.textContent = descriptionInput.value;
-  closeEditPopup();
+  closeModal(editPopup);
 }
 
-editButton.addEventListener("click", openEditPopup);
-closeButton.addEventListener("click", closeEditPopup);
+editButton.addEventListener("click", handleOpenEditModal);
+
+closeButton.addEventListener("click", function () {
+  closeModal(editPopup);
+});
+
 profileForm.addEventListener("submit", handleProfileFormSubmit);
+
+initialCards.forEach(function (card) {
+  console.log(card.name);
+});
